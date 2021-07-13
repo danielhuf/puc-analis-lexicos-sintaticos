@@ -1,0 +1,109 @@
+Laboratório 1 - INF1022 - 13/03/2021
+Daniel Stulberg Huf - 1920468 - Turma 3WA
+
+PRIMEIRA PARTE
+
+1. Espera-se que a palavra "one" seja trocada por "ONE" uma vez a cada linha do arquivo exercicio1.
+   De fato, isso ocorreu.
+
+2. Espera-se que, com essa entrada, cada \/ será interpretado como um / que indica o path de um diretório ou arquivo,
+   ou seja, estaremos escrevendo o caminho do arquivo prara ser interpretado pelo sed. 
+
+3. Espera-se que, a cada linha que tiver uma sequência de caracteres contendo números, tal sequência seja
+   substituída por "& &".
+
+4. Observa-se que o comando executado sobre a string '9123Ka' retorna 'a9123', e sobre a string '1987Ka', do
+exercicio2, retorna 'a1987'.
+
+SEGUNDA PARTE
+
+2.1)
+Escala Kelvin -> $ sed -n -r '/K/p' < 2.1.temperaturas
+    Saída:
+ 45 K, 32 K, 67 K
+ 87 K, 96 K, 102 K
+
+Escala Celsius -> $ sed -n -r 's/([0-9]+) *C/\1 C/pg' < 2.1.temperaturas
+    Saída:
+ 43 C, 42 C, 54 C
+
+Escala Fahrenheit -> $ sed -n -r 's/([0-9]+) *F/\1 F/pg' < 2.1.temperaturas
+    Saída:
+
+2.2) Para o código da ação "CSNA3", por exemplo:
+     $ sed -n -E 's/CSNA3//p' < 2.2.acoes > 2.2.result
+     Saída:
+     13.70
+     13.70
+     13.70
+     13.70
+
+2.3) $ sed -E 's/(\w+ )*(\w+) (\w+ )*\2 (\w+ )*\2.*/XXX/' < 2.3.tresvezes
+     Saída:
+     XXX
+     XXX
+Resposta-> $sed -E 's/.*(\b[a-zA-Z]+\b).*\1.*\1.*/XXX/' < 2.3.tresvezes
+
+2.4) $ sed -n -E 's/(\b\w+) (\b\w+)ou (\b\w+) (\b\w+)/\u\3 \4 foi \2ad\3 por \1/p' < 2.4.frases
+     Saída:
+     A fachada foi pintada por Eduardo
+     O gol foi marcado por Gabriel
+     O goleiro foi driblado por Maria
+     A amiga foi beijada por Fernanda
+     A prisão foi deixada por Lula
+     
+2.5) Escolhendo o ativo "CSNA3" e printando todos os valores acima de 10.00:
+     $ sed -n -E '/CSNA3 (10.0[1-9]|10.[1-9]+|1[1-9].[0-9]+|[2-9][0-9].[0-9]+)/p' < 2.5.certovalor
+     Saída:
+     CSNA3 15.00
+     CSNA3 16.00
+     CSNA3 30.25
+     CSNA3 40.50
+     CSNA3 50.75
+     CSNA3 61.00
+
+2.6) Uma alternativa seria ler um arquivo onde a primeira linha contem o nome do ativo e seu valor limite.
+     Um primeiro comando sed iria ler essas informação e um segundo comando sed iria capturar a informação para
+     operar sobre as próximas linhas, como está no item acima. 
+
+2.7) $ sed -E 's/$/FIM/g' < 2.4.frases
+     Saída:
+     Eduardo pintou a fachadaFIM
+     Gabriel marcou o golFIM
+     Maria driblou o goleiroFIM
+     Fernanda beijou a amigaFIM
+     Lula deixou a prisãoFIM
+
+2.8) $ ls -l | sed -r '/(-.*)|(total.*)/d' | sed -r 's/([0-9A-Za-z:_]+ +)*//'
+     Saída: Os diretórios presentes no atual path são mostrados 
+
+2.9) $ sed -nr '/^[^@]+@[^.]+(\.com|\.com\.br)\s*$/p' < 2.9.emails 
+     Saída:
+     maiocnz342@gmail.com
+     portela_maicon@yahoo.com
+     adasdsa33@asds.com.br
+
+2.10) $ sed -E 's/[a-zA-Z]+@[a-zA-Z]+(\.com|\.com\.br)/email addr/g' < 2.10.fraseemail
+      Saída: 
+      Eduardo email addr a fachada
+      Gabriel marcou o email addr gol
+      Maria driblou o goleiro
+      email addr beijou a amiga
+      Lula deixou a prisão
+
+2.11) $ sed -E 's/([a-zA-Z]+)@([a-zA-Z]+)(\.com|\.com\.br)/email de \1/g' < 2.10.fraseemail
+      Saída:
+      Eduardo email de luiziinho a fachada
+      Gabriel marcou o email de michael gol
+      Maria driblou o goleiro
+      email de robert beijou a amiga
+      Lula deixou a prisão
+
+2.12) Resposta-> $ sed -E 's/^ *int+\w+ *[,;]/{s/([,;])/=-1\1/g}' < 2.12.program.c
+      
+
+2.13) Para criar tal tipo de filtro, seria necessario representar uma expressão regular que seja 
+capaz de descrever essa linguagem. Como essa linguagem não possui uma ER que a descreva, não é possível
+desenvolver tal filtro. 
+
+Resposta-> Não há como fixar o valor de n de a e igualar esse n para b. 
